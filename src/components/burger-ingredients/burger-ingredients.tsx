@@ -2,15 +2,17 @@ import { useState, useRef, useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
-import { BurgerIngredientsUI } from '../ui/burger-ingredients';
+import { BurgerIngredientsUI } from '@ui';
+import { useSelector, useDispatch } from '../../services/store';
+import { selectIngredients } from '../../services/slices/ingredientsSlice';
+import { fetchIngredients } from '../../services/thunk/ingredients';
 
 export const BurgerIngredients: FC = () => {
-  /** TODO: взять переменные из стора */
-  const buns = [];
-  const mains = [];
-  const sauces = [];
+  const dispatch = useDispatch();
+  const ingredients = useSelector(selectIngredients);
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
+
   const titleBunRef = useRef<HTMLHeadingElement>(null);
   const titleMainRef = useRef<HTMLHeadingElement>(null);
   const titleSaucesRef = useRef<HTMLHeadingElement>(null);
@@ -28,6 +30,12 @@ export const BurgerIngredients: FC = () => {
   });
 
   useEffect(() => {
+    if (!ingredients.length) {
+      dispatch(fetchIngredients());
+    }
+  }, [dispatch, ingredients.length]);
+
+  useEffect(() => {
     if (inViewBuns) {
       setCurrentTab('bun');
     } else if (inViewSauces) {
@@ -37,8 +45,8 @@ export const BurgerIngredients: FC = () => {
     }
   }, [inViewBuns, inViewFilling, inViewSauces]);
 
-  const onTabClick = (tab: string) => {
-    setCurrentTab(tab as TTabMode);
+  const onTabClick = (tab: TTabMode) => {
+    setCurrentTab(tab);
     if (tab === 'bun')
       titleBunRef.current?.scrollIntoView({ behavior: 'smooth' });
     if (tab === 'main')
@@ -47,21 +55,27 @@ export const BurgerIngredients: FC = () => {
       titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  return null;
+  const buns = ingredients.filter((ingredient) => ingredient.type === 'bun');
+  const mains = ingredients.filter((ingredient) => ingredient.type === 'main');
+  const sauces = ingredients.filter(
+    (ingredient) => ingredient.type === 'sauce'
+  );
 
   return (
-    <BurgerIngredientsUI
-      currentTab={currentTab}
-      buns={buns}
-      mains={mains}
-      sauces={sauces}
-      titleBunRef={titleBunRef}
-      titleMainRef={titleMainRef}
-      titleSaucesRef={titleSaucesRef}
-      bunsRef={bunsRef}
-      mainsRef={mainsRef}
-      saucesRef={saucesRef}
-      onTabClick={onTabClick}
-    />
+    <>
+      <BurgerIngredientsUI
+        currentTab={currentTab}
+        buns={buns}
+        mains={mains}
+        sauces={sauces}
+        titleBunRef={titleBunRef}
+        titleMainRef={titleMainRef}
+        titleSaucesRef={titleSaucesRef}
+        bunsRef={bunsRef}
+        mainsRef={mainsRef}
+        saucesRef={saucesRef}
+        onTabClick={onTabClick}
+      />
+    </>
   );
 };
