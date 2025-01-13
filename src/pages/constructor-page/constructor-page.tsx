@@ -4,10 +4,13 @@ import { BurgerIngredients } from '@components';
 import { BurgerConstructor } from '@components';
 import { Preloader } from '@ui';
 import { FC } from 'react';
+import { RootState } from '../../services/store';
+import { useSelector } from 'react-redux';
 
 export const ConstructorPage: FC = () => {
-  /** TODO: взять переменную из стора */
-  const isIngredientsLoading = false;
+  const isIngredientsLoading = useSelector(
+    (state: RootState) => state.ingredients.loading
+  );
 
   return (
     <>

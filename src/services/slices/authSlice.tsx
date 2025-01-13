@@ -1,7 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
 import { TUser } from '@utils-types';
-import { fetchUser, loginUser } from '../thunk/user';
+import { RootState } from '../store';
+import {
+  fetchUser,
+  fetchWithRefreshThunk,
+  loginUser,
+  logoutUser,
+  registerUser
+} from '../thunk/user';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 
 export const selectAuthState = (state: RootState) => state.auth;
 export const selectUser = (state: RootState): TUser | null => state.auth.user;
@@ -37,11 +44,38 @@ const authSlice = createSlice({
     builder
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
-        state.user = action.payload.user;
+        state.user = action.payload;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isAuthenticated = false;
+        state.user = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+        setCookie('accessToken', action.payload.accessToken);
+        setCookie('refreshToken', action.payload.refreshToken);
+        setCookie('userData', JSON.stringify(action.payload.user));
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isAuthenticated = false;
+        state.user = null;
+        deleteCookie('accessToken');
+        deleteCookie('refreshToken');
+        deleteCookie('userData');
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        console.error('Ошибка выхода:', action.error);
+      })
+      .addCase(fetchWithRefreshThunk.fulfilled, (state, action) => {
+        console.log('Fetch with refresh successful:', action.payload);
+      })
+      .addCase(fetchWithRefreshThunk.rejected, (state, action) => {
+        console.error('Ошибка запроса с обновлением токена:', action.error);
       });
   }
 });

@@ -14,7 +14,6 @@ import styles from './app.module.css';
 
 import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { ProtectedRoute } from '../protected-route/protected-route';
 
 const App = () => {
   const navigate = useNavigate();
@@ -27,49 +26,49 @@ const App = () => {
         <Route
           path='/login'
           element={
-            <ProtectedRoute>
-              <Login />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <Login />
+            // </ProtectedRoute>
           }
         />
         <Route
           path='/register'
           element={
-            <ProtectedRoute>
-              <Register />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <Register />
+            // </ProtectedRoute>
           }
         />
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRoute>
-              <ForgotPassword />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <ForgotPassword />
+            // </ProtectedRoute>
           }
         />
         <Route
           path='/reset-password'
           element={
-            <ProtectedRoute>
-              <ResetPassword />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <ResetPassword />
+            // </ProtectedRoute>
           }
         />
         <Route
           path='/profile'
           element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <Profile />
+            // </ProtectedRoute>
           }
         />
         <Route
           path='/profile/orders'
           element={
-            <ProtectedRoute>
-              <ProfileOrders />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <ProfileOrders />
+            // </ProtectedRoute>
           }
         />
         <Route path='*' element={<NotFound404 />} />
@@ -98,11 +97,11 @@ const App = () => {
         <Route
           path='/profile/orders/:number'
           element={
-            <ProtectedRoute>
-              <Modal title='Order Info' onClose={() => {}}>
-                <OrderInfo />
-              </Modal>
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <Modal title='Order Info' onClose={() => {}}>
+              <OrderInfo />
+            </Modal>
+            // </ProtectedRoute>
           }
         />
       </Routes>
