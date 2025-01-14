@@ -2,7 +2,7 @@ import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../services/store';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
 import { fetchOrders } from '../../services/thunk/orders';
@@ -14,6 +14,7 @@ export const Feed: FC = () => {
     (state: RootState) => state.orders.orders
   );
   const ingredients = useSelector(selectIngredients);
+  const loading = useSelector((state: RootState) => state.orders.loading);
 
   useEffect(() => {
     dispatch(fetchOrders());
@@ -29,7 +30,7 @@ export const Feed: FC = () => {
     dispatch(fetchOrders());
   };
 
-  if (!orders.length) {
+  if (loading) {
     return <Preloader />;
   }
 

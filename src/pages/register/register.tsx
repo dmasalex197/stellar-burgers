@@ -11,20 +11,24 @@ export const Register: FC = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const [error, setError] = useState<string>('');
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    setError('');
     const resultActionRegister = await dispatch(
       registerUser({ name: userName, password, email })
     );
     if (registerUser.fulfilled.match(resultActionRegister)) {
       navigate('/');
+    } else if (registerUser.rejected.match(resultActionRegister)) {
+      setError('Что-то пошло не так');
     }
   };
 
   return (
     <RegisterUI
-      errorText=''
+      errorText={error}
       email={email}
       userName={userName}
       password={password}

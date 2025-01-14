@@ -3,8 +3,8 @@ import { BurgerConstructorElementUI } from '@ui';
 import { BurgerConstructorElementProps } from './type';
 import { useDispatch } from 'react-redux';
 import {
-  moveIngredientDown,
   moveIngredientUp,
+  moveIngredientDown,
   removeIngredient
 } from '../../services/slices/constructorItemsSlice';
 
@@ -24,7 +24,7 @@ export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
     };
 
     const handleClose = () => {
-      dispatch(removeIngredient(ingredient._id));
+      dispatch(removeIngredient(index));
     };
 
     return (

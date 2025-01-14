@@ -10,21 +10,33 @@ import {
   TAuthResponse,
   TLoginData,
   TRefreshResponse,
-  TRegisterData
+  TRegisterData,
+  TUserResponse,
+  updateUserApi
 } from '@api';
-import { TUser } from '@utils-types';
+
+export const fetchWithRefreshThunk = createAsyncThunk<
+  TRefreshResponse,
+  { url: string; options: RequestInit }
+>(
+  'api/fetchWithRefresh',
+  async ({ url, options }, {}) =>
+    await fetchWithRefresh<TRefreshResponse>(url, options)
+);
+
+export const loginUser = createAsyncThunk<TAuthResponse, TLoginData>(
+  'auth/loginUser',
+  async (body) => await loginUserApi(body)
+);
 
 export const fetchUser = createAsyncThunk('auth/fetchUser', async () => {
   const data = await getUserApi();
   return data.user;
 });
 
-export const loginUser = createAsyncThunk<TUser, TLoginData>(
-  'auth/loginUser',
-  async (loginData) => {
-    const data = await loginUserApi(loginData);
-    return data.user;
-  }
+export const updateUser = createAsyncThunk<TUserResponse, TRegisterData>(
+  'auth/fetchNewDateUser',
+  async (body) => await updateUserApi(body)
 );
 
 export const registerUser = createAsyncThunk<TAuthResponse, TRegisterData>(
@@ -48,25 +60,11 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk(
-  'auth/logoutUser',
-  async (_, { rejectWithValue }) => {
-    try {
-      await logoutApi();
-      return true;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
+export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  if (!refreshToken) {
+    throw new Error('Требуется токен');
   }
-);
-
-export const fetchWithRefreshThunk = createAsyncThunk<
-  TRefreshResponse,
-  { url: string; options: RequestInit }
->('api/fetchWithRefresh', async ({ url, options }, { rejectWithValue }) => {
-  try {
-    return await fetchWithRefresh<TRefreshResponse>(url, options);
-  } catch (err) {
-    return rejectWithValue(err);
-  }
+  await logoutApi();
+  return true;
 });

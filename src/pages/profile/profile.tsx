@@ -2,7 +2,7 @@ import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../services/store';
-import { fetchUser } from '../../services/thunk/user';
+import { fetchUser, updateUser } from '../../services/thunk/user';
 
 export const Profile: FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -32,6 +32,12 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(updateUser(formValue));
+    setFormValue({
+      name: user?.name || '',
+      email: user?.email || '',
+      password: ''
+    });
   };
 
   const handleCancel = (e: SyntheticEvent) => {

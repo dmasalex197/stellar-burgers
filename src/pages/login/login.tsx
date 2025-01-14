@@ -10,20 +10,23 @@ export const Login: FC = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const [error, setError] = useState<string>('');
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    setError('');
 
     const resultActionLogin = await dispatch(loginUser({ email, password }));
     if (loginUser.fulfilled.match(resultActionLogin)) {
       navigate('/');
+    } else if (loginUser.rejected.match(resultActionLogin)) {
+      setError('Неправильный логин или пароль');
     }
-    1;
   };
 
   return (
     <LoginUI
-      errorText=''
+      errorText={error}
       email={email}
       setEmail={setEmail}
       password={password}
