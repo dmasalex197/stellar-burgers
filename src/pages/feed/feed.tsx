@@ -2,29 +2,18 @@ import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '../../services/store';
-import { selectIngredients } from '../../services/slices/ingredientsSlice';
+
 import { fetchOrders } from '../../services/thunk/orders';
-import { fetchIngredients } from '../../services/thunk/ingredients';
+import { useDispatch, useSelector } from '../../services/store';
 
 export const Feed: FC = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const orders: TOrder[] = useSelector(
-    (state: RootState) => state.orders.orders
-  );
-  const ingredients = useSelector(selectIngredients);
-  const loading = useSelector((state: RootState) => state.orders.loading);
+  const dispatch = useDispatch();
+  const orders: TOrder[] = useSelector((state) => state.orders.orders);
+  const loading = useSelector((state) => state.orders.loading);
 
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (!ingredients.length) {
-      dispatch(fetchIngredients());
-    }
-  }, [dispatch, ingredients.length]);
 
   const handleGetFeeds = () => {
     dispatch(fetchOrders());

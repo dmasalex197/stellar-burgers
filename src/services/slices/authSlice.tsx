@@ -28,7 +28,6 @@ const authInitialState: AuthState = {
   loading: false
 };
 
-export const selectAuthState = (state: RootState) => state.auth;
 export const selectUser = (state: RootState): TUser | null => state.auth.user;
 
 const authSlice = createSlice({
@@ -49,7 +48,7 @@ const authSlice = createSlice({
         setCookie('userData', JSON.stringify(action.payload.user));
         localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state) => {
         state.loading = false;
         state.isAuthenticated = false;
         state.isAuthChecked = true;
