@@ -4,19 +4,22 @@ import { getCookie } from '../../utils/cookie';
 
 type ProtectedRouteProps = {
   children: React.ReactElement;
-  onlyUnAuth?: boolean;
+  anonymous?: boolean;
 };
 
 export const ProtectedRoute = ({
-  onlyUnAuth,
+  anonymous,
   children
 }: ProtectedRouteProps) => {
   const location = useLocation();
+  const accessToken = getCookie('accessToken');
+  const from = location.state?.from || { pathname: '/' };
 
-  if (onlyUnAuth && !!getCookie('accessToken')) {
-    return <Navigate to='/' />;
+  if (anonymous && accessToken) {
+    return <Navigate replace to={from} />;
   }
-  if (!onlyUnAuth && !getCookie('accessToken')) {
+
+  if (!anonymous && !accessToken) {
     return <Navigate to='/login' state={{ from: location }} />;
   }
   return children;
