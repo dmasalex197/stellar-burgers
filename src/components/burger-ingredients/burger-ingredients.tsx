@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from '../../services/store';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
 
 export const BurgerIngredients: FC = () => {
-  const dispatch = useDispatch();
   const ingredients = useSelector(selectIngredients);
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');

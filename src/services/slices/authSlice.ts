@@ -48,7 +48,7 @@ const authSlice = createSlice({
         setCookie('userData', JSON.stringify(action.payload.user));
         localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
-      .addCase(loginUser.rejected, (state) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
         state.isAuthChecked = true;

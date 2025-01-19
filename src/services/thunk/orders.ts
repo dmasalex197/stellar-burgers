@@ -7,19 +7,16 @@ import {
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { clearConstructor } from '../slices/constructorItemsSlice';
 
-export const fetchOrders = createAsyncThunk(
-  'orders/fetchOrders',
-  async () => await getFeedsApi()
-);
+export const fetchOrders = createAsyncThunk('orders/fetchOrders', getFeedsApi);
 
 export const fetchOrder = createAsyncThunk(
   'order/fetchOrder',
-  async (orderNumber: number) => await getOrderByNumberApi(orderNumber)
+  getOrderByNumberApi
 );
 
 export const fetchProfileOrders = createAsyncThunk(
   'orders/fetchProfileOrders',
-  async () => await getOrdersApi()
+  getOrdersApi
 );
 
 export const fetchNewOrders = createAsyncThunk(

@@ -1,17 +1,16 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
-
-import { registerUser } from '../../services/thunk/user';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../services/store';
+import { useNavigate } from 'react-router-dom';
+import { registerUser } from '../../services/thunk/user';
 
 export const Register: FC = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string>('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [error, setError] = useState<string>('');
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();

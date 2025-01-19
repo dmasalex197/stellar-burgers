@@ -1,8 +1,7 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-
-import { fetchUser, updateUser } from '../../services/thunk/user';
 import { useDispatch, useSelector } from '../../services/store';
+import { fetchUser, updateUser } from '../../services/thunk/user';
 
 export const Profile: FC = () => {
   const user = useSelector((state) => state.auth.user);

@@ -35,7 +35,6 @@ const orderModalDataSlice = createSlice({
       });
   }
 });
-
 export const { clearOrderModalData } = orderModalDataSlice.actions;
 
 export const orderModalDataReducer = orderModalDataSlice.reducer;
