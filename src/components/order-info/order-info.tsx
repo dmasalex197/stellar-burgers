@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
 import { fetchOrder } from '../../services/thunk/orders';
 import { TOrderInfo } from '../ui/order-info/type';
+
 export const OrderInfo: FC = () => {
   const orderData = useSelector((state) => state.orders.orderData);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
@@ -16,7 +17,7 @@ export const OrderInfo: FC = () => {
     if (number) {
       dispatch(fetchOrder(+number));
     }
-  }, [dispatch]);
+  }, [dispatch, number]);
 
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;

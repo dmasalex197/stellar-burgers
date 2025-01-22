@@ -12,8 +12,14 @@ import {
 import '../../index.css';
 import styles from './app.module.css';
 
-import { AppHeader, Modal, IngredientDetails } from '@components';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { AppHeader, Modal, IngredientDetails, OrderInfo } from '@components';
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  useMatch
+} from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
@@ -26,6 +32,10 @@ const App = () => {
   const location = useLocation();
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const background = location.state?.background;
+
+  const profileMatch = useMatch('/profile/orders/:number')?.params.number;
+  const feedMatch = useMatch('/feed/:number')?.params.number;
+  const orderNumber = profileMatch || feedMatch;
 
   useEffect(() => {
     if (!ingredients.length) {
@@ -88,6 +98,47 @@ const App = () => {
           }
         />
         <Route path='*' element={<NotFound404 />} />
+
+        <Route
+          path='/feed/:number'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p
+                className={`text text_type_digits-default ${styles.detailHeader}`}
+              >
+                #{orderNumber && orderNumber.padStart(6, '0')}
+              </p>
+              <OrderInfo />
+            </div>
+          }
+        />
+
+        <Route
+          path='/ingredients/:id'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p className={`text text_type_main-large ${styles.detailHeader}`}>
+                Детали ингредиента
+              </p>
+              <IngredientDetails />
+            </div>
+          }
+        />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <ProtectedRoute>
+              <div className={styles.detailPageWrap}>
+                <p
+                  className={`text text_type_digits-default ${styles.detailHeader}`}
+                >
+                  #{orderNumber && orderNumber.padStart(6, '0')}
+                </p>
+                <OrderInfo />
+              </div>
+            </ProtectedRoute>
+          }
+        />
       </Routes>
 
       {background && (

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { CONSTRUCTOR_ITEMS_SLICE_NAME } from './sliceNames';
 import { v4 as uuidv4 } from 'uuid';
