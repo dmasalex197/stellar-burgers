@@ -26,10 +26,10 @@ import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/thunk/ingredients';
 
 const App = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const location = useLocation();
-  const ingredients = useSelector((state) => state.ingredients.ingredients);
   const background = location.state?.background;
 
   const profileMatch = useMatch('/profile/orders/:number')?.params.number;
@@ -37,10 +37,8 @@ const App = () => {
   const orderNumber = profileMatch || feedMatch;
 
   useEffect(() => {
-    if (!ingredients.length) {
-      dispatch(fetchIngredients());
-    }
-  }, [dispatch, ingredients.length]);
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
   function closeModal(): void {
     navigate(-1);

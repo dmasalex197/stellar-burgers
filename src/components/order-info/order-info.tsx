@@ -8,16 +8,22 @@ import { getOrderByNumberThunk } from '../../services/thunk/orders';
 import { TOrderInfo } from '../ui/order-info/type';
 
 export const OrderInfo: FC = () => {
-  const orderData = useSelector((state) => state.orders.orderData);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const dispatch = useDispatch();
   const { number } = useParams<{ number: string }>();
 
-  useEffect(() => {
-    if (number) {
-      dispatch(getOrderByNumberThunk(+number));
+  let orderData = useSelector((state) => {
+    if (state.orders.orders?.length) {
+      return state.orders.orders.find((item) => item.number === Number(number));
     }
-  }, [dispatch, number]);
+    return null;
+  });
+
+  useEffect(() => {
+    if (!orderData) {
+      dispatch(getOrderByNumberThunk(Number(number)));
+    }
+  }, [dispatch, orderData, number]);
 
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;

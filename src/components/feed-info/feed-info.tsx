@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 
 import { TOrder } from '@utils-types';
 import { FeedInfoUI } from '@ui';
@@ -13,12 +13,10 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
     .slice(0, 20);
 
 export const FeedInfo: FC = () => {
-  // const orders = useSelector((state) => state.orders);
   const orders = useSelector(selectFeedOrders);
 
-  const readyOrders = getOrders(orders, 'done');
-  const pendingOrders = getOrders(orders, 'pending');
-  console.log('==========11111load_ingredients11111==========');
+  const readyOrders = useMemo(() => getOrders(orders, 'done'), [orders]);
+  const pendingOrders = useMemo(() => getOrders(orders, 'pending'), [orders]);
   return (
     <FeedInfoUI
       readyOrders={readyOrders}
