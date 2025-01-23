@@ -4,7 +4,7 @@ import { OrderInfoUI } from '@ui';
 import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
-import { fetchOrder } from '../../services/thunk/orders';
+import { getOrderByNumberThunk } from '../../services/thunk/orders';
 import { TOrderInfo } from '../ui/order-info/type';
 
 export const OrderInfo: FC = () => {
@@ -15,7 +15,7 @@ export const OrderInfo: FC = () => {
 
   useEffect(() => {
     if (number) {
-      dispatch(fetchOrder(+number));
+      dispatch(getOrderByNumberThunk(+number));
     }
   }, [dispatch, number]);
 

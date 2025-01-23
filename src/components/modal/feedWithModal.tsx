@@ -6,7 +6,6 @@ import { ProtectedRoute } from '../protected-route/protected-route';
 const FeedWithModal = () => {
   const navigate = useNavigate();
   const { number } = useParams();
-
   return (
     <Modal
       title={`#${number}`}

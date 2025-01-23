@@ -24,7 +24,6 @@ import { ProtectedRoute } from '../protected-route/protected-route';
 import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/thunk/ingredients';
-import { FeedWithModal, ProfileOrderWithModal } from '../modal/feedWithModal';
 
 const App = () => {
   const navigate = useNavigate();
@@ -42,6 +41,10 @@ const App = () => {
       dispatch(fetchIngredients());
     }
   }, [dispatch, ingredients.length]);
+
+  function closeModal(): void {
+    navigate(-1);
+  }
 
   return (
     <div className={styles.app}>
@@ -143,23 +146,37 @@ const App = () => {
 
       {background && (
         <Routes>
-          <Route path='/feed/:number' element={<FeedWithModal />} />
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal
+                title={`#${orderNumber && orderNumber.padStart(6, '0')}`}
+                onClose={closeModal}
+              >
+                <OrderInfo />
+              </Modal>
+            }
+          />
           <Route
             path='/ingredients/:id'
             element={
-              <Modal
-                title='Детали ингредиентов'
-                onClose={() => {
-                  navigate('/');
-                }}
-              >
+              <Modal title={'Детали ингредиента'} onClose={closeModal}>
                 <IngredientDetails />
               </Modal>
             }
           />
           <Route
             path='/profile/orders/:number'
-            element={<ProfileOrderWithModal />}
+            element={
+              <ProtectedRoute>
+                <Modal
+                  title={`#${orderNumber && orderNumber.padStart(6, '0')}`}
+                  onClose={closeModal}
+                >
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
+            }
           />
         </Routes>
       )}

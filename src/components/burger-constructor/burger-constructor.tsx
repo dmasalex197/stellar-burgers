@@ -3,7 +3,7 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { clearOrderModalData } from '../../services/slices/orderModalDataSlice';
 import { useNavigate } from 'react-router-dom';
-import { fetchNewOrders } from '../../services/thunk/orders';
+import { orderBurgerThunk } from '../../services/thunk/orders';
 import { useDispatch, useSelector } from '../../services/store';
 
 export const BurgerConstructor: FC = () => {
@@ -25,7 +25,7 @@ export const BurgerConstructor: FC = () => {
       ...constructorItems.ingredients.map((item) => item._id),
       constructorItems.bun._id
     ];
-    dispatch(fetchNewOrders(ingredientIds));
+    dispatch(orderBurgerThunk(ingredientIds));
   };
   const closeOrderModal = () => {
     dispatch(clearOrderModalData());

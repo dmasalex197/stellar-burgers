@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { ORDER_MODAL_DATA_SLICE_NAME } from './sliceNames';
-import { fetchNewOrders } from '../thunk/orders';
+import { orderBurgerThunk } from '../thunk/orders';
 
 interface OrderModalDataState {
   data: TOrder | null;
@@ -23,14 +23,14 @@ const orderModalDataSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchNewOrders.pending, (state) => {
+      .addCase(orderBurgerThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchNewOrders.fulfilled, (state, action) => {
+      .addCase(orderBurgerThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
       })
-      .addCase(fetchNewOrders.rejected, (state) => {
+      .addCase(orderBurgerThunk.rejected, (state) => {
         state.loading = false;
       });
   }
