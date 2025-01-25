@@ -12,11 +12,11 @@ export const OrderInfo: FC = () => {
   const dispatch = useDispatch();
   const { number } = useParams<{ number: string }>();
 
-  let orderData = useSelector((state) => {
+  const orderData = useSelector((state) => {
     if (state.orders.orders?.length) {
       return state.orders.orders.find((item) => item.number === Number(number));
     }
-    return null;
+    return state.orders.orderData;
   });
 
   useEffect(() => {

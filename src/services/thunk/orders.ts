@@ -14,7 +14,7 @@ export const getFeedsThunk = createAsyncThunk(
 
 export const getOrderByNumberThunk = createAsyncThunk(
   'order/fetchOrder',
-  getOrderByNumberApi
+  async (number: number) => await getOrderByNumberApi(number)
 );
 
 export const getOrdersThunk = createAsyncThunk(
