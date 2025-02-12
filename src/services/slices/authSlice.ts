@@ -21,7 +21,7 @@ interface AuthState {
   loading: boolean;
 }
 
-const authInitialState: AuthState = {
+export const authInitialState: AuthState = {
   isAuthenticated: false,
   isAuthChecked: false,
   user: null,
@@ -136,8 +136,7 @@ const authSlice = createSlice({
         deleteCookie('userData');
         localStorage.removeItem('refreshToken');
       })
-      .addCase(logoutUser.rejected, (state, action) => {
-        console.error('Ошибка выхода:', action.error);
+      .addCase(logoutUser.rejected, (state) => {
         state.loading = false;
       });
   }

@@ -3,17 +3,17 @@ import { TOrder } from '@utils-types';
 import { ORDER_MODAL_DATA_SLICE_NAME } from './sliceNames';
 import { orderBurgerThunk } from '../thunk/orders';
 
-interface OrderModalDataState {
+export interface OrderModalDataState {
   data: TOrder | null;
   loading: boolean;
 }
 
-const initialState: OrderModalDataState = {
+export const initialState: OrderModalDataState = {
   data: null,
   loading: false
 };
 
-const orderModalDataSlice = createSlice({
+export const orderModalDataSlice = createSlice({
   name: ORDER_MODAL_DATA_SLICE_NAME,
   initialState,
   reducers: {

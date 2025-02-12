@@ -7,24 +7,24 @@ import { fetchIngredients } from '../thunk/ingredients';
 export const selectIngredients = (state: RootState): TIngredient[] =>
   state.ingredients.ingredients;
 
-interface IngredientsState {
+export interface IngredientsState {
   ingredients: TIngredient[];
   loading: boolean;
-  error: string | null;
-  modal: {
-    isOpen: boolean;
-    ingredient: TIngredient | null;
-  };
+  error: string | Error | null;
+  // modal: {
+  //   isOpen: boolean;
+  //   ingredient: TIngredient | null;
+  // };
 }
 
-const initialState: IngredientsState = {
+export const initialState: IngredientsState = {
   ingredients: [],
   loading: false,
-  error: null,
-  modal: {
-    isOpen: false,
-    ingredient: null
-  }
+  error: null
+  // modal: {
+  //   isOpen: false,
+  //   ingredient: null
+  // }
 };
 
 const ingredientsSlice = createSlice({
