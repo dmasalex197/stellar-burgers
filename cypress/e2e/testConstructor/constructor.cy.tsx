@@ -1,22 +1,19 @@
 /// <reference types="cypress" />
-
-const testUrl = 'http://localhost:4000';
-const ingredientDetails = 'Детали ингредиента';
-const ingredientFirst = 'Ингредиент 1';
+import { ingredientDetails, ingredientFirst, SELECTORS } from '../constants';
 
 describe('Тесты для конструктора бургера', () => {
   beforeEach(() => {
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' });
     cy.viewport(1300, 800);
-    cy.visit(testUrl);
+    cy.visit('');
   });
 
   it('Добавление булки в конструктор', () => {
-    cy.get('[data-cy=bun-ingredients]').contains('Добавить').click();
-    cy.get('[data-cy=constructor-bun-1]')
+    cy.get(SELECTORS.INGREDIENTS).contains('Добавить').click();
+    cy.get(SELECTORS.CONSTRUCTOR_BUN_1)
       .contains(ingredientFirst)
       .should('exist');
-    cy.get('[data-cy=constructor-bun-2]')
+    cy.get(SELECTORS.CONSTRUCTOR_BUN_2)
       .contains(ingredientFirst)
       .should('exist');
   });
@@ -24,10 +21,10 @@ describe('Тесты для конструктора бургера', () => {
   it('Добавление ингредиентов в конструктор', () => {
     cy.get('[data-cy=main-ingredients]').contains('Добавить').click();
     cy.get('[data-cy=sause-ingredients]').contains('Добавить').click();
-    cy.get('[data-cy=constructor-ingredients]')
+    cy.get(SELECTORS.CONSTRUCTOR_INGREDIENTS)
       .contains('Ингредиент 3')
       .should('exist');
-    cy.get('[data-cy=constructor-ingredients]')
+    cy.get(SELECTORS.CONSTRUCTOR_INGREDIENTS)
       .contains('Ингредиент 12')
       .should('exist');
   });
@@ -41,7 +38,7 @@ describe('Тесты для модального окна', () => {
   beforeEach(() => {
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' });
     cy.viewport(1300, 800);
-    cy.visit(testUrl);
+    cy.visit('');
   });
 
   it('Открытие модальных окон', () => {
@@ -83,7 +80,7 @@ describe('Тесты для оформления заказа', () => {
     );
     cy.setCookie('accessToken', 'test-accessToken');
     cy.viewport(1300, 800);
-    cy.visit(testUrl);
+    cy.visit('');
   });
 
   it('Создание заказа', () => {
@@ -96,20 +93,14 @@ describe('Тесты для оформления заказа', () => {
       .its('request.body')
       .should('deep.equal', { ingredients: ['1', '3', '12', '1'] });
 
-    cy.get('[data-cy=order-number]').contains('12345').should('exist');
+    cy.get(SELECTORS.ORDER_NUMBER).contains('12345').should('exist');
 
     cy.get('#modals button[aria-label="Закрыть"]').click();
-    cy.get('[data-cy=order-number]').should('not.exist');
+    cy.get(SELECTORS.ORDER_NUMBER).should('not.exist');
 
-    cy.get('[data-cy=constructor]')
-      .contains(ingredientFirst)
-      .should('not.exist');
-    cy.get('[data-cy=constructor]')
-      .contains('Ингредиент 3')
-      .should('not.exist');
-    cy.get('[data-cy=constructor]')
-      .contains('Ингредиент 12')
-      .should('not.exist');
+    cy.get(SELECTORS.CONSTRUCTOR).contains(ingredientFirst).should('not.exist');
+    cy.get(SELECTORS.CONSTRUCTOR).contains('Ингредиент 3').should('not.exist');
+    cy.get(SELECTORS.CONSTRUCTOR).contains('Ингредиент 12').should('not.exist');
   });
 
   afterEach(() => {
