@@ -19,7 +19,7 @@ interface OrdersState {
   status: 'pending' | 'done' | 'created';
 }
 
-const initialState: OrdersState = {
+export const initialState: OrdersState = {
   orders: [],
   success: false,
   total: 0,
